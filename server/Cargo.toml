@@ -15,3 +15,4 @@ sha2 = "0.10.6"
 hex = "0.4.3"
 rand_core = { version = "0.6", features = ["std"] }
 sha-crypt = "0.5.0"
+rand = "0.8.5"
