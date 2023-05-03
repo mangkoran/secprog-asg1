@@ -6,6 +6,7 @@ pub fn get_item() -> Vec<Item> {
     use server::schema::item::dsl::*;
 
     let conn = &mut establish_connection();
+
     item.load::<Item>(conn).expect("Error loading items")
 }
 

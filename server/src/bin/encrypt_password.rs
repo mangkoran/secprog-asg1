@@ -17,7 +17,7 @@ pub fn encrypt_password(password: &str) -> String {
         sha512_crypt_b64(password.as_bytes(), SALT.as_bytes(), &params).expect("Should not fail");
     let extended_hash = format!("$6$rounds={ROUNDS}${SALT}${hash}");
 
-    // Verify the hasehd password
+    // Verify the hashed password
     assert!(sha512_check(password, extended_hash.as_str()).is_ok());
 
     // Return the hash only
@@ -26,6 +26,7 @@ pub fn encrypt_password(password: &str) -> String {
 
 fn main() {
     let password = "Not so secure password";
+
     println!("Password: {password}");
     println!("Hashed Password: {}", encrypt_password(password));
 }
