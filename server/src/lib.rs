@@ -1,5 +1,7 @@
 pub mod models;
 pub mod schema;
+pub mod db;
+pub mod utils;
 
 use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
