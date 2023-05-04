@@ -1,3 +1,5 @@
+mod encrypt_password;
+
 use diesel::prelude::*;
 use encrypt_password::encrypt_password;
 use rand::distributions::{Alphanumeric, DistString};
@@ -5,9 +7,7 @@ use rand::thread_rng;
 use server::models::*;
 use server::*;
 
-mod encrypt_password;
-
-pub fn add_item(name: &str, password: &str) -> usize {
+pub fn add_item(name: &str, password: &str) -> Item {
     use crate::schema::item;
 
     let conn = &mut establish_connection();
@@ -15,16 +15,16 @@ pub fn add_item(name: &str, password: &str) -> usize {
 
     diesel::insert_into(item::table)
         .values(&new_item)
-        .execute(conn)
+        // .execute(conn)
+        .get_result(conn)
         .expect("Error saving new item")
 }
 
 fn main() {
-    let rand_string: String = Alphanumeric.sample_string(&mut thread_rng(), 8);
+    let name = Alphanumeric.sample_string(&mut thread_rng(), 8);
     let password = "bar";
+    let item = add_item(name.as_str(), encrypt_password(password).as_str());
 
-    println!("Name: {rand_string}");
-    println!("Password: {password}");
-
-    add_item(rand_string.as_str(), encrypt_password(password).as_str());
+    println!("Added name: {}", item.name);
+    println!("Added password: {}", item.password);
 }
