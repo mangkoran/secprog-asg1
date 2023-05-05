@@ -1,6 +1,6 @@
+pub mod db;
 pub mod models;
 pub mod schema;
-pub mod db;
 pub mod utils;
 
 use diesel::prelude::*;
