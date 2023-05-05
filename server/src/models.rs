@@ -1,7 +1,8 @@
 use crate::schema::user;
 use diesel::prelude::*;
+use rocket::serde::{Deserialize, Serialize};
 
-#[derive(Queryable)]
+#[derive(Queryable, Serialize, Deserialize)]
 pub struct User {
     pub username: String,
     pub password: String,
