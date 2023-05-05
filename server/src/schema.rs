@@ -1,8 +1,8 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    item (name) {
-        name -> Text,
+    user (username) {
+        username -> Text,
         password -> Text,
     }
 }
