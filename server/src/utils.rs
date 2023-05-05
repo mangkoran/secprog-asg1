@@ -5,7 +5,7 @@
 pub fn encrypt_password(password: &str) -> String {
     use sha_crypt::{sha512_check, sha512_crypt_b64, Sha512Params};
 
-    const SALT: &str = "somesalt";
+    const SALT: &str = "seasalt";
     const ROUNDS: usize = 10_000;
 
     // First setup the Sha512Params arguments with:
@@ -25,8 +25,5 @@ pub fn encrypt_password(password: &str) -> String {
 }
 
 fn main() {
-    let password = "Not so secure password";
-
-    println!("Password: {password}");
-    println!("Hashed Password: {}", encrypt_password(password));
+    unimplemented!();
 }
