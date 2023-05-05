@@ -1,12 +1,8 @@
 use crate::models::*;
-use crate::utils;
+use crate::utils::*;
 use crate::*;
 
 use diesel::prelude::*;
-// use rand::distributions::{Alphanumeric, DistString};
-// use rand::thread_rng;
-
-use utils::encrypt_password;
 
 pub fn add_user(username: &str, password: &str) -> User {
     use crate::schema::user;
@@ -25,24 +21,34 @@ pub fn add_user(username: &str, password: &str) -> User {
         .expect("Error adding user")
 }
 
-pub fn get_user() -> Vec<User> {
-    use crate::schema::user::dsl::*;
-
-    let conn = &mut establish_connection();
-
-    user.load::<User>(conn).expect("Error loading users")
-}
-
-pub fn delete_user(username: &str) {
+pub fn get_user(username: &str) -> User {
     use crate::schema::user::dsl;
 
-    let pattern = format!("%{}%", username);
     let conn = &mut establish_connection();
-    let num_deleted = diesel::delete(dsl::user.filter(dsl::username.like(pattern)))
-        .execute(conn)
-        .expect("Error deleting user");
+
+    dsl::user
+        .find(username)
+        .load::<User>(conn)
+        .expect("Error")
+        .into_iter()
+        .nth(0)
+        .expect("Error getting user")
 }
 
-fn main() {
-    unimplemented!();
+pub fn get_users() -> Vec<User> {
+    use crate::schema::user::dsl;
+
+    let conn = &mut establish_connection();
+
+    dsl::user.load::<User>(conn).expect("Error getting users")
+}
+
+pub fn delete_user(username: &str) -> User {
+    use crate::schema::user::dsl;
+
+    let conn = &mut establish_connection();
+
+    diesel::delete(dsl::user.filter(dsl::username.eq(username)))
+        .get_result(conn)
+        .expect("Error deleting user")
 }
