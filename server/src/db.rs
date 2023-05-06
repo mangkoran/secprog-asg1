@@ -35,6 +35,18 @@ pub fn get_users() -> Result<Vec<User>, diesel::result::Error> {
     dsl::user.load::<User>(conn)
 }
 
+pub fn update_user(username: &str, password: &str) -> Result<User, diesel::result::Error> {
+    use crate::schema::user::dsl;
+
+    let conn = &mut establish_connection();
+    let new_password = encrypt_password(password);
+
+    // dsl::user.find(username).first::<User>(conn)
+    diesel::update(dsl::user.find(username))
+        .set(dsl::password.eq(new_password.as_str()))
+        .get_result(conn)
+}
+
 pub fn delete_user(username: &str) -> Result<User, diesel::result::Error> {
     use crate::schema::user::dsl;
 
