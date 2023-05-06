@@ -1,4 +1,5 @@
 use crate::db::*;
+use crate::models::User;
 
 /// Returns a hashed password using [Sha512](https://www.akkadia.org/drepper/SHA-crypt.txt) method.
 ///
@@ -26,13 +27,14 @@ pub fn encrypt_password(password: &str) -> String {
     return hash;
 }
 
-pub fn check_user(username: &str, password: &str) -> Result<&'static str, &'static str> {
-    let user = get_user(username);
+pub fn check_user(username: &str, password: &str) -> Result<User, bool> {
+    let user = get_user(username).expect("Error loading user");
+
     let hashed_password = encrypt_password(password);
 
     if user.password == hashed_password {
-        Ok("Correct password")
+        Ok(user)
     } else {
-        Err("Incorrect password")
+        Err(false)
     }
 }

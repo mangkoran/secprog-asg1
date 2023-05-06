@@ -1,7 +1,7 @@
 use server::db::*;
 
 fn main() {
-    let binding = get_users();
+    let binding = get_users().expect("Error getting users");
     let users = binding.iter().enumerate();
     let users_count = users.len();
 
