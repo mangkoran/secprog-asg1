@@ -1,1 +1,4 @@
 server/test.db
+client/target
+client/Cargo.lock
+client/dist
